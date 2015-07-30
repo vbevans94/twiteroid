@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Twitteroid</string>
+    <string name="title_activity_timeline">Timeline</string>
+    <string name="description_profile">Profile image</string>
+    <string name="error_api">Error happened!</string>
+    <string name="description_media">Image media</string>
+
+    <string name="title_activity_media">Tweet</string>
+    <string name="description_image_full_size">Image full size</string>
+    <string name="title_activity_map">Place</string>
+    <string name="text_from_place">from %s</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="description_loading">Loading</string>
+    <string name="title_save">Save</string>
+    <string name="message_saved">Image saved to SD card</string>
+    <string name="message_save_failed">Error during image saving</string>
+    <string name="error_connection">Cannot connect to service.</string>
+</resources>
