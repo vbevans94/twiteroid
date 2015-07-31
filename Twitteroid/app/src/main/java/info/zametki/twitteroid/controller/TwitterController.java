@@ -1,6 +1,8 @@
 package info.zametki.twitteroid.controller;
 
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -9,7 +11,6 @@ import info.zametki.twitteroid.data.ConnectionInfo;
 import info.zametki.twitteroid.data.apis.TwitterApi;
 import info.zametki.twitteroid.data.model.Tweet;
 import io.realm.Realm;
-import io.realm.RealmList;
 import io.realm.RealmResults;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -58,8 +59,23 @@ public class TwitterController {
         callback.success(result, null);
     }
 
-    public void removeTwoDaysOlder() {
+    public void removeOlderThanBeforeYesterday() {
+        realm.beginTransaction();
 
+        // calculate day before yesterday
+        Date date = new Date();
+        long newTime = date.getTime() - TimeUnit.DAYS.toMillis(2);
+        date.setTime(newTime);
+
+        RealmResults<Tweet> oldTweets = realm.where(Tweet.class).lessThan("createdAt", date).findAll();
+        oldTweets.clear();
+        realm.commitTransaction();
+    }
+
+    public void removeOlderThanBeforeYesterday(Callback<List<Tweet>> callback) {
+        removeOlderThanBeforeYesterday();
+
+        getFromDatabase(callback);
     }
 
     private class SaveWrapper implements Callback<List<Tweet>> {
@@ -72,6 +88,8 @@ public class TwitterController {
 
         @Override
         public void success(List<Tweet> tweets, Response response) {
+            removeOlderThanBeforeYesterday(); // to keep database size limited
+
             realm.beginTransaction();
 
             realm.copyToRealmOrUpdate(tweets);

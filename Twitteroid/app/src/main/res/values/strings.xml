@@ -15,4 +15,8 @@
     <string name="message_saved">Image saved to SD card</string>
     <string name="message_save_failed">Error during image saving</string>
     <string name="error_connection">Cannot connect to service.</string>
+    <string name="title_warning">Warning</string>
+    <string name="message_clear_old_tweets">Delete cached tweets older than day before yestarday?</string>
+    <string name="title_clear">Clear</string>
+    <string name="action_clear">Clear old tweets from cache</string>
 </resources>

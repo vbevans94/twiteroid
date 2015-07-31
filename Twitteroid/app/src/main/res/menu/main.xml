@@ -3,9 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MockupActivity">
+
     <item
         android:id="@+id/action_refresh"
         android:icon="@drawable/ic_refresh_normal"
         android:title="@string/action_refresh"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_clear"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/action_clear"
         app:showAsAction="always" />
 </menu>

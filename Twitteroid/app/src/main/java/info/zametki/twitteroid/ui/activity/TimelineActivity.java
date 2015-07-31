@@ -27,11 +27,12 @@ import info.zametki.twitteroid.annotations.ActivityScope;
 import info.zametki.twitteroid.controller.TwitterController;
 import info.zametki.twitteroid.data.model.Tweet;
 import info.zametki.twitteroid.ui.adapter.TweetAdapter;
+import info.zametki.twitteroid.ui.fragment.ClearTweetsFragment;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class TimelineActivity extends AppCompatActivity implements Callback<List<Tweet>> {
+public class TimelineActivity extends AppCompatActivity implements Callback<List<Tweet>>, ClearTweetsFragment.ClearTweetsListener {
 
     @InjectView(R.id.list_tweets)
     ListView listTweets;
@@ -114,8 +115,17 @@ public class TimelineActivity extends AppCompatActivity implements Callback<List
             case R.id.action_refresh:
                 refreshData(false);
                 break;
+
+            case R.id.action_clear:
+                ClearTweetsFragment.show(getSupportFragmentManager());
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClear() {
+        holder.twitterController.removeOlderThanBeforeYesterday(this);
     }
 
     @Override
