@@ -64,7 +64,7 @@ public class TwitterController {
 
         // calculate day before yesterday
         Date date = new Date();
-        long newTime = date.getTime() - TimeUnit.DAYS.toMillis(2);
+        long newTime = date.getTime() - TimeUnit.DAYS.toMillis(1);
         date.setTime(newTime);
 
         RealmResults<Tweet> oldTweets = realm.where(Tweet.class).lessThan("createdAt", date).findAll();

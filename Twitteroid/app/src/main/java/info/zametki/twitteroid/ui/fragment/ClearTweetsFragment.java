@@ -37,7 +37,7 @@ public class ClearTweetsFragment extends DialogFragment {
         return new AlertDialog.Builder(getActivity())
                 .setTitle(getString(R.string.title_warning))
                 .setMessage(getString(R.string.message_clear_old_tweets))
-                .setPositiveButton(getString(R.string.title_clear), new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.title_delete), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ((ClearTweetsListener) getActivity()).onClear();

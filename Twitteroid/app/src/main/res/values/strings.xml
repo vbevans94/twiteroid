@@ -17,6 +17,6 @@
     <string name="error_connection">Cannot connect to service.</string>
     <string name="title_warning">Warning</string>
     <string name="message_clear_old_tweets">Delete cached tweets older than day before yestarday?</string>
-    <string name="title_clear">Clear</string>
-    <string name="action_clear">Clear old tweets from cache</string>
+    <string name="title_delete">Delete</string>
+    <string name="action_clear">Delete old tweets from cache</string>
 </resources>

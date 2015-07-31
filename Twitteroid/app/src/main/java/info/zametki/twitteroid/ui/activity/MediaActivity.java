@@ -48,6 +48,7 @@ public class MediaActivity extends AppCompatActivity {
 
         String imageUrl = getIntent().getStringExtra(EXTRA_IMAGE_URL);
         MainApp.get(this).appComponent().picasso().load(imageUrl)
+                .error(R.drawable.loading_error_black)
                 .into(imageFull);
     }
 
