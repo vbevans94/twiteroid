@@ -12,9 +12,11 @@ import retrofit.http.Query;
  */
 public interface TwitterApi {
 
-    @GET("/statuses/home_timeline.json")
+    String HOME_TIMELINE = "/statuses/home_timeline.json?extended_entities=true";
+
+    @GET(HOME_TIMELINE)
     void timeline(/*@Query("since_id") long sinceId, */@Query("max_id") long maxId, Callback<List<Tweet>> callback);
 
-    @GET("/statuses/home_timeline.json")
+    @GET(HOME_TIMELINE)
     void timeline(Callback<List<Tweet>> callback);
 }

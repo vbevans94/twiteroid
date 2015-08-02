@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -22,7 +21,7 @@ import butterknife.InjectView;
 import info.zametki.twitteroid.MainApp;
 import info.zametki.twitteroid.R;
 
-public class MediaActivity extends AppCompatActivity {
+public class ImageActivity extends AppCompatActivity {
 
     private static final String EXTRA_IMAGE_URL = "extra_image_url";
     private static final String TWEET_NAME_FORMAT = "tweet%d.png";
@@ -31,7 +30,7 @@ public class MediaActivity extends AppCompatActivity {
     ImageView imageFull;
 
     public static void start(Context context, String imageUrl) {
-        Intent intent = new Intent(context, MediaActivity.class);
+        Intent intent = new Intent(context, ImageActivity.class);
         intent.putExtra(EXTRA_IMAGE_URL, imageUrl);
         context.startActivity(intent);
     }

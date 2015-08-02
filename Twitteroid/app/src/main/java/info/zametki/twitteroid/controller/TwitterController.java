@@ -88,8 +88,6 @@ public class TwitterController {
 
         @Override
         public void success(List<Tweet> tweets, Response response) {
-            removeOlderThanBeforeYesterday(); // to keep database size limited
-
             realm.beginTransaction();
 
             realm.copyToRealmOrUpdate(tweets);
@@ -101,7 +99,7 @@ public class TwitterController {
 
         @Override
         public void failure(RetrofitError error) {
-
+            original.failure(error);
         }
     }
 }

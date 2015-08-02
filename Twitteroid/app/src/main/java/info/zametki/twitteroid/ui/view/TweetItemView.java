@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
@@ -20,13 +21,20 @@ import butterknife.InjectView;
 import info.zametki.twitteroid.R;
 import info.zametki.twitteroid.data.model.Coordinates;
 import info.zametki.twitteroid.data.model.Entities;
+import info.zametki.twitteroid.data.model.ExtendedEntities;
+import info.zametki.twitteroid.data.model.ExtendedEntity;
 import info.zametki.twitteroid.data.model.Place;
 import info.zametki.twitteroid.data.model.Tweet;
 import info.zametki.twitteroid.data.model.TweetMedia;
 import info.zametki.twitteroid.data.model.TweetUrl;
+import info.zametki.twitteroid.data.model.VideoInfo;
+import info.zametki.twitteroid.data.model.VideoVariant;
+import info.zametki.twitteroid.ui.activity.ImageActivity;
 import info.zametki.twitteroid.ui.activity.MapActivity;
-import info.zametki.twitteroid.ui.activity.MediaActivity;
+import info.zametki.twitteroid.ui.activity.PlayerActivity;
+import info.zametki.twitteroid.ui.transformation.PlayTransformation;
 import info.zametki.twitteroid.ui.transformation.RoundedTransformation;
+import io.realm.RealmList;
 
 /**
  * Author vbevans94.
@@ -43,6 +51,9 @@ public class TweetItemView extends RelativeLayout {
 
     @InjectView(R.id.image_media)
     ImageView imageMedia;
+
+    @InjectView(R.id.image_video)
+    ImageView imageVideo;
 
     @InjectView(R.id.text_name)
     TextView textName;
@@ -83,7 +94,32 @@ public class TweetItemView extends RelativeLayout {
             public void onClick(View v) {
                 if (v.getTag() instanceof TweetMedia) {
                     TweetMedia media = (TweetMedia) v.getTag();
-                    MediaActivity.start(getContext(), getFullImage(media));
+                    ImageActivity.start(getContext(), getFullImage(media));
+                }
+            }
+        });
+
+        imageVideo.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v.getTag() instanceof ExtendedEntity) {
+                    ExtendedEntity video = (ExtendedEntity) v.getTag();
+                    // TODO: add dialog to choose format
+                    VideoInfo videoInfo = video.getVideoInfo();
+                    if (videoInfo != null) {
+                        String url = null;
+                        for (VideoVariant variant : videoInfo.getVariants()) {
+                            if (variant.getContentType().equals("video/mp4")) {
+                                url = variant.getUrl();
+                                break;
+                            }
+                        }
+                        if (url != null) {
+                            PlayerActivity.start(getContext(), url);
+                        } else {
+                            Toast.makeText(getContext(), R.string.error_video_format, Toast.LENGTH_LONG).show();
+                        }
+                    }
                 }
             }
         });
@@ -99,11 +135,32 @@ public class TweetItemView extends RelativeLayout {
 
         Entities entities = tweet.getEntities();
         if (entities != null) {
+            // extract videos
+            ExtendedEntities extendedEntities = tweet.getExtendedEntities();
+            boolean hasVideos = false;
+            if (extendedEntities != null && extendedEntities.getMedia() != null && !extendedEntities.getMedia().isEmpty()) {
+                for (ExtendedEntity video : extendedEntities.getMedia()) {
+                    if (video.getType().equals(ExtendedEntity.VIDEO_TYPE)) {
+                        tweetText = tweetText.replace(video.getExtractedUrl(), "");
+
+                        picasso.load(video.getMediaUrl())
+                                .transform(new PlayTransformation(getContext(), R.drawable.ic_play_normal))
+                                .into(imageVideo);
+
+                        imageVideo.setTag(video);
+
+                        hasVideos = true;
+                        break; // only one
+                    }
+                }
+            }
+            imageVideo.setVisibility(hasVideos ? VISIBLE : GONE);
+
             // extract images
             List<TweetMedia> medias = entities.getMedia();
-            if (medias != null && !medias.isEmpty()) {
+            if (medias != null && !medias.isEmpty() && !hasVideos) {
                 imageMedia.setVisibility(VISIBLE);
-                for (final TweetMedia media : medias) {
+                for (TweetMedia media : medias) {
                     tweetText = tweetText.replace(media.getExtractedUrl(), "");
 
                     picasso.load(media.getMediaUrl())

@@ -39,12 +39,15 @@
             android:name=".ui.activity.TimelineActivity"
             android:label="@string/title_activity_timeline" />
         <activity
-            android:name=".ui.activity.MediaActivity"
+            android:name=".ui.activity.ImageActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_media" />
         <activity
             android:name=".ui.activity.MapActivity"
             android:label="@string/title_activity_map" />
+        <activity
+            android:name=".ui.activity.PlayerActivity"
+            android:label="@string/title_video" />
 
         <meta-data
             android:name="com.google.android.gms.version"

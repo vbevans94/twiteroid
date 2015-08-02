@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -32,6 +33,10 @@ public class Tweet extends RealmObject {
 
     @Expose
     private Place place;
+
+    @Expose
+    @SerializedName("extended_entities")
+    private ExtendedEntities extendedEntities;
 
     public long getId() {
         return id;
@@ -79,5 +84,13 @@ public class Tweet extends RealmObject {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public ExtendedEntities getExtendedEntities() {
+        return extendedEntities;
+    }
+
+    public void setExtendedEntities(ExtendedEntities extendedEntities) {
+        this.extendedEntities = extendedEntities;
     }
 }
